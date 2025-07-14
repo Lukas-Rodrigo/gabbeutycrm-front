@@ -16,10 +16,9 @@ export class ServiceItemForm {
 
     if (isTouch) {
       const now = Date.now();
-      const doubleClick = now - this.lastClickTime < 2000;
+      const doubleClick = now - this.lastClickTime < 200000;
 
       if (doubleClick) {
-
         alert('Adicionado!');
         this.showOverlay = false;
         this.lastClickTime = 0;
@@ -31,7 +30,6 @@ export class ServiceItemForm {
           this.showOverlay = false;
         }, 2000);
       }
-    } else {
     }
   }
 
