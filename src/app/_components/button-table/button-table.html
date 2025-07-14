@@ -1,0 +1,13 @@
+<button
+  class="flex items-center gap-2 p-2 rounded-lg border border-transparent cursor-pointer bg-transparent! hover:border-surface-200"
+>
+  {{
+  buttonTitle() ? buttonTitle() : null
+  }}
+  <i
+    [ngClass]="[
+    iconTitle() || 'hidden',
+    iconTitle() === 'pi pi-whatsapp' ? 'text-[#59d279]' : ''
+  ]"
+  ></i>
+</button>

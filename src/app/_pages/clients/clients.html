@@ -1,0 +1,33 @@
+<header class="mb-5">
+  <app-user-actions></app-user-actions>
+
+
+</header>
+
+<main>
+  <div class="grid grid-cols-3 gap-3 mb-10">
+    <app-card-information
+      [statisticDetail]="true"
+      contentCard="23"
+
+      titleCard="Clientes"
+      titleIcon="pi-users"
+    />
+  </div>
+
+  <div class="card p-4 rounded-lg bg-primary-contrast">
+    @if (showClients) {
+      <app-table-clients
+        (showClientsTable)="showEvent($event)"
+        [clientsData]="clientsData"
+      />
+    } @else {
+      <app-table-appointments
+        [appointmentData]="appointmentData"
+        (showClientsTable)="showEvent($event)"
+      />
+
+    }
+
+  </div>
+</main>

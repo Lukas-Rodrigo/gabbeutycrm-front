@@ -1,0 +1,40 @@
+<div class="right-15 top-15">
+  @if (!profileImagePreview) {
+    <label for="profile-upload" class="cursor-pointer">
+      <div
+        class="w-[120px] h-[120px] rounded-full bg-[#f2f2fb] flex items-center justify-center text-center text-sm text-gray-500 hover:opacity-80 transition-opacity overflow-hidden"
+      >
+        <div>
+          Inserir <br/>
+          Foto de Perfil
+        </div>
+      </div>
+    </label>
+
+    <input
+      type="file"
+      id="profile-upload"
+      accept="image/*"
+      class="hidden"
+      (change)="onFileSelected($event)"
+    />
+  } @else {
+    <div
+      class="w-[120px] h-[120px] rounded-full overflow-hidden relative group"
+    >
+      <img
+        [src]="profileImagePreview"
+        class="w-full h-full object-cover group-hover:opacity-60! transition-opacity! cursor-pointer"
+      />
+      <span
+        (click)="removeProfileImage()"
+        class="absolute font-medium! opacity-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center gap-2 cursor-pointer  group-hover:opacity-100 hover:text-muted-color transition"
+      >
+            <i class="pi pi-times text-sm!  block"></i>
+            Remover
+          </span>
+
+
+    </div>
+  }
+</div>

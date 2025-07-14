@@ -1,0 +1,15 @@
+
+.sidebar.collapsed {
+  width: 4rem;
+}
+
+.sidebar.expanded {
+  width: 16.25rem;
+}
+
+.sidebar {
+  transition: width 0.4s;
+  overflow: hidden;
+  white-space: nowrap;
+}
+

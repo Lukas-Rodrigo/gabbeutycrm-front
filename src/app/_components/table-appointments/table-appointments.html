@@ -1,0 +1,117 @@
+<p-table
+  #dt2
+  [globalFilterFields]="['service', 'status']"
+  [paginator]="true"
+  [rowHover]="true"
+  [rows]="9"
+  [stripedRows]="true"
+  [tableStyle]="{
+          'min-width':
+          '50rem'}"
+  [value]="appointmentData()"
+  dataKey="id"
+  size="small"
+>
+
+  <ng-template pTemplate="caption">
+    <div class="flex items-center">
+      <div class="flex items-center gap-3">
+        <app-primary-button
+
+          (click)="showClientsTableChange()"
+          buttonTitle="Clientes"
+        />
+
+        <p-button
+          label="Agendamentos"
+          severity="primary"
+          size="small"
+          styleClass=" duration-150! border-0! text-black! bg-primary-700! text-primary-contrast! hover:bg-primary-800!"
+        />
+      </div>
+      <div class="flex items-center gap-2 ml-auto">
+        <p-iconfield class="ml-auto"
+                     iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search"></i>
+          </p-inputicon>
+          <input
+            (input)="onGlobalFilter($event)"
+            [(ngModel)]="searchValue"
+            pInputText
+            pSize="small"
+            placeholder="Digite um nome, telefone ou e-mail"
+            type="text"
+          />
+        </p-iconfield>
+        <p-button (click)="clear(dt2)" [outlined]="true"
+                  icon="pi pi-filter-slash"
+                  label="Limpar Filtro" size="small"
+        />
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width: 25%">Cliente</th>
+      <th style="width: 15%">Serviço</th>
+      <th style="width: 20%">Data e Hora</th>
+      <th style="width: 15%">Valor</th>
+      <th style="width: 20%">Lembrete</th>
+      <th style="width: 5%" class="text-center!">Status</th>
+    </tr>
+  </ng-template>
+  <ng-template let-appointment pTemplate="body">
+    <tr class="align-middle">
+      <td>
+        <div class="flex  items-center gap-2">
+          <app-button-table
+            iconTitle="pi pi-eye"
+            pTooltip="Ver agendamento"
+            tooltipPosition="top"
+          />
+          <app-profile [showDetails]="true"
+                       nameClient="Gabriela Peixoto"
+                       [small]="true"></app-profile>
+        </div>
+      </td>
+
+      <td class=" font-medium! text-gray-600">
+        <div class="flex items-center gap-1">
+          <span>{{ appointment.service }}</span>
+        </div>
+      </td>
+
+
+      <td class=" font-medium! text-gray-500">
+        {{ appointment.date }}
+      </td>
+
+
+      <td class=" font-medium! text-gray-500">
+        <span class="text-sm text-gray-600 italic">
+          R$ {{ appointment.price }},00
+        </span>
+      </td>
+
+      <td class=" font-medium!">
+        <span class="text-sm text-gray-600">
+          —
+        </span>
+      </td>
+
+      <td>
+        <span
+          [ngClass]="getStatusAppointment(appointment)"
+          class="px-2 py-1 rounded-full text-primary-contrast  text-xs font-medium">
+          {{ appointment.status }}
+        </span>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="paginatorleft">
+  </ng-template>
+
+</p-table>

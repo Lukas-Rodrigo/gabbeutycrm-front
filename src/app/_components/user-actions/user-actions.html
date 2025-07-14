@@ -1,0 +1,18 @@
+<div class="flex flex-col gap-2">
+  <div class="flex items-center gap-3">
+    <h1 class="text-muted-color-emphasis text-4xl font-bold">Clientes</h1>
+  </div>
+
+  <div class="flex gap-3">
+
+    <app-add-clients-overlay-form/>
+
+    <app-add-appointment-overlay-form/>
+
+    <app-primary-button
+      buttonTitle="Lembrete"
+      [primaryHover]="true"
+      iconTitle="pi pi-list-check"
+    />
+  </div>
+</div>

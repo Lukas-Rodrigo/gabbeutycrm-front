@@ -1,0 +1,29 @@
+<div class="flex flex-col gap-2">
+  <div class="flex items-center gap-3">
+    <app-primary-button
+
+    iconTitle="pi pi-arrow-left"
+    />
+    <h1 class="text-muted-color-emphasis text-4xl font-bold">Setembro</h1>
+    <app-primary-button
+      iconTitle="pi pi-arrow-right"
+    />
+  </div>
+
+  <div class="flex gap-3">
+    <app-primary-button
+    buttonTitle="Esse mês"
+    [primaryHover]="true"
+    />
+
+    <app-primary-button
+      buttonTitle="Essa semana"
+      [primaryHover]="true"
+    />
+
+    <app-primary-button
+      buttonTitle="Hoje"
+      [primaryHover]="true"
+    />
+  </div>
+</div>

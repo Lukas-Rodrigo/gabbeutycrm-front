@@ -1,0 +1,29 @@
+/* Estilos básicos */
+.sidebar {
+  height: 100vh;
+  background: #2d2d2d;
+  color: white;
+  transition: width 0.3s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.toggle-btn {
+  position: absolute;
+  top: 10px;
+  left: 60px;
+  z-index: 100;
+  background: #2d2d2d;
+  color: white;
+  border: none;
+}

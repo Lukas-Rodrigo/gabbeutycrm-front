@@ -1,0 +1,29 @@
+<div
+  class="bg-primary-contrast rounded-2xl shadow-xs px-2.5 py-6 w-full transition relative">
+  <div class="flex items-center gap-4">
+    <div
+      class="w-[70px] h-[70px] rounded-full flex justify-center items-center bg-[#f9faff]">
+      <i class="pi {{titleIcon()}} text-3xl! leading-none text-primary-700"></i>
+    </div>
+    <div>
+      <p class="text-lg font-normal text-muted-color-emphasis">{{titleCard()}}</p>
+      <span class="text-2xl font-bold text-primary-800">
+        {{contentCard()}}
+      </span>
+    </div>
+  </div>
+
+  @if (showDetails()) {
+    <span
+      class="text-muted-color text-xs cursor-pointer hover:opacity-60 absolute bottom-3 right-4.5">
+      Ver detalhes
+    </span>
+  }
+
+  @if (statisticDetail()) {
+    <span
+      class="text-muted-color-emphasis font-medium text-xs italic absolute bottom-3 right-4.5">
+      <span class="text-green-500">+30%</span> ao ao mês anterior
+    </span>
+  }
+</div>

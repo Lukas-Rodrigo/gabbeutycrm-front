@@ -1,0 +1,46 @@
+<header class="mb-5">
+  <app-date-range></app-date-range>
+</header>
+<main>
+  <div class="grid grid-cols-3 gap-3">
+    <app-card-information
+      contentCard="R$ 834,54"
+
+      titleCard="Faturamento"
+      titleIcon="pi-dollar"
+    />
+
+    <app-card-information
+      [showDetails]="true"
+
+      contentCard="15"
+      titleCard="Agendados"
+      titleIcon="pi-id-card"
+    />
+
+    <app-card-information
+      [showDetails]="true"
+
+      contentCard="120"
+      titleCard="Total Realizado"
+      titleIcon="pi-users"
+    />
+  </div>
+
+  <div class="mt-5">
+    <h1 class="text-muted-color-emphasis text-3xl mb-3 font-semibold">
+      Agendamentos
+    </h1>
+
+    <div
+      class="grid grid-cols-2 gap-3 bg-primary-contrast py-8 px-16 rounded-2xl">
+      <app-profile-card ></app-profile-card>
+      <app-profile-card></app-profile-card>
+      <app-profile-card></app-profile-card>
+      <app-profile-card></app-profile-card>
+      <app-profile-card></app-profile-card>
+      <app-profile-card></app-profile-card>
+
+    </div>
+  </div>
+</main>

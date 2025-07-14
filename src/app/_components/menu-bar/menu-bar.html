@@ -1,0 +1,18 @@
+<p-button (click)="isExpanded = !isExpanded" class="toggle-btn">
+  <i class="pi pi-bars"
+     [ngClass]="isExpanded ? 'pi-angle-left' : 'pi-angle-right'"></i>
+</p-button>
+
+<!-- sidebar -->
+<div class="sidebar" [ngClass]="{ expanded: isExpanded, collapsed: !isExpanded }">
+  <ul>
+    <li>
+      <i class="pi pi-home"></i>
+      <span *ngIf="isExpanded">Início</span>
+    </li>
+    <li>
+      <i class="pi pi-cog"></i>
+      <span *ngIf="isExpanded">Configurações</span>
+    </li>
+  </ul>
+</div>

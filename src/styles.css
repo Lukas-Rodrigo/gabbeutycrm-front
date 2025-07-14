@@ -1,0 +1,27 @@
+
+@import "tailwindcss";
+@import "primeicons/primeicons.css";
+@plugin "tailwindcss-primeui";
+
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f9faff !important;
+  font-size: 14px !important;
+}
+
+input, button, textarea {
+  background-color: #ffffff !important;
+}
+
+p-togglebutton {
+  border-radius: 4px !important;
+  background-color: #dae5f3 !important;
+}
+
+p-togglebutton.p-togglebutton-checked span.p-togglebutton-content{
+
+  background: #edf2f9 !important;
+  border-radius: 8px !important;
+}
+

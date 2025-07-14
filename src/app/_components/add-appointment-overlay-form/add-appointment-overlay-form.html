@@ -1,0 +1,192 @@
+<app-primary-button
+  (click)="showDialog()"
+  [primaryHover]="true"
+  buttonTitle="Agendamento"
+  iconTitle="pi pi-calendar-plus"
+/>
+
+
+<p-dialog
+  [(visible)]="visible"
+  [baseZIndex]="10000"
+  [closable]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [modal]="true"
+  [style]="{ width: '48rem', height: '50rem' }"
+  styleClass="bg-[#f9faff]! relative!"
+>
+
+  <ng-template #header>
+    <div>
+      <h1 class="text-2xl font-semibold">Agendar cliente</h1>
+      <span class="text-muted-color">Informe os dados para realizar um novo agendamento</span>
+    </div>
+  </ng-template>
+
+
+  <div class="grid grid-cols-2 gap-5">
+    <div class="bg-primary-contrast p-3 rounded-lg">
+      <p-stepper [(value)]="activeStep" >
+        <p-step-list class="text-sm!">
+          <p-step [value]="1" class="flex flex-row flex-auto gap-2 p-0!">
+            <ng-template #content let-activateCallback="activateCallback"
+                         let-value="value">
+              <button
+                (click)="activateCallback()"
+                class="bg-transparent cursor-pointer border-0 inline-flex flex-col gap-2">
+                    <span
+                      [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                      class="rounded-full border-2  w-8 h-8 inline-flex items-center justify-center"
+                    >
+                        <i class="pi pi-clock"></i>
+                    </span>
+              </button>
+            </ng-template>
+          </p-step>
+
+          <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+            <ng-template #content let-activateCallback="activateCallback"
+                         let-value="value">
+              <button
+                (click)="activateCallback()"
+                class="bg-transparent cursor-pointer border-0 inline-flex flex-col gap-2">
+                    <span
+                      [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                      class="rounded-full border-2  w-8 h-8 inline-flex items-center justify-center"
+
+                    >
+                        <i class="pi pi-shopping-cart"></i>
+                    </span>
+              </button>
+            </ng-template>
+          </p-step>
+
+        </p-step-list>
+        <p-step-panels >
+
+          <p-step-panel [value]="1">
+            <ng-template #content let-activateCallback="activateCallback">
+
+              <div class="h-[32.8rem]">
+                <div class="flex flex-col gap-4 w-3/4">
+                  <div
+                    class="flex flex-col font-medium gap-0.5 w-full">
+                    <label for="date">Data</label>
+                    <p-datepicker
+                      [(ngModel)]="date2" [iconDisplay]="'input'"
+                      [showIcon]="true"
+                      inputId="date"
+                      size="small"
+
+
+                    ></p-datepicker>
+
+                  </div>
+
+                  <div class="flex flex-col gap-1 ">
+                    <label class="font-semibold">Horários</label>
+                    <p-select-button
+                      [(ngModel)]="value" [options]="hours"
+                      class="grid! grid-cols-3! gap-3  bg-transparent!"
+                      optionLabel="hour"
+                      optionValue="value"
+                      size="small"
+
+                    >
+                      <ng-template #item let-item>
+                        <div>
+                    <span>
+                      {{ item.hour }}
+                    </span>
+                        </div>
+                      </ng-template>
+
+                    </p-select-button>
+                  </div>
+
+                  <div class="flex flex-col gap-1">
+                    <label class="font-semibold"
+                           for="clientSelect">Cliente</label>
+                    <p-select
+                      [(ngModel)]="selectedCountry"
+                      [filter]="true"
+                      [options]="countries"
+                      [showClear]="true"
+                      filterBy="name"
+                      optionLabel="name"
+                      placeholder="Selecione um cliente"
+                      size="small"
+                    >
+                      <ng-template #selectedItem let-selectedOption>
+                        <app-profile
+                          [nameClient]="selectedOption.name"
+                          [small]="true"
+                        />
+                      </ng-template>
+                      <ng-template #item let-country>
+                        <div class="flex items-center gap-2">
+                          <img
+                            [class]="'flag flag-' + country.code.toLowerCase()"
+                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                            style="width: 18px"/>
+                          <div>{{ country.name }}</div>
+                        </div>
+                      </ng-template>
+                    </p-select>
+                  </div>
+
+                  <p-button (onClick)="activateCallback(2)"
+                            icon="pi pi-plus-circle"
+                            iconPos="right"
+                            label="Adicionar serviços"
+                            severity="secondary"
+                            size="small"
+                            styleClass="absolute! bottom-5! right-5! bg-primary! text-primary-contrast!"
+                  />
+                </div>
+              </div>
+            </ng-template>
+          </p-step-panel>
+          <p-step-panel [value]="2">
+            <ng-template #content let-activateCallback="activateCallback">
+              <div class="h-[35rem] ">
+                <h1
+                  class="font-semibold text-xl text-muted-color-emphasis mb-5">Serviços</h1>
+
+                <div class="overflow-y-auto flex gap-3 flex-col">
+                  <app-service-item-form/>
+                  <app-service-item-form/>
+                  <app-service-item-form/>
+                  <app-service-item-form/>
+                  <app-service-item-form/>
+                  <app-service-item-form/>
+
+                  <app-service-item-form/>
+                </div>
+              </div>
+
+
+            </ng-template>
+          </p-step-panel>
+
+
+        </p-step-panels>
+      </p-stepper>
+    </div>
+    <div class="flex flex-col gap-8">
+      <app-profile-preview-form/>
+      <app-summary-services-form/>
+    </div>
+  </div>
+
+
+
+
+</p-dialog>

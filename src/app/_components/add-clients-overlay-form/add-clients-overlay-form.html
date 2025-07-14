@@ -1,0 +1,70 @@
+<app-primary-button
+  buttonTitle="Clientes"
+  [primaryHover]="true"
+  iconTitle="pi pi-plus-circle"
+  (click)="showDialog()"
+/>
+
+<p-dialog
+  [(visible)]="visible"
+  [baseZIndex]="10000"
+  [closable]="true"
+  [contentStyle]="{ overflow: 'auto' }"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [modal]="true"
+  [style]="{ width: '48rem', height: '35rem' }"
+  styleClass="bg-[#f9faff]!"
+
+>
+
+  <ng-template #header>
+    <div class="flex  flex-col w-full">
+      <h1 class="text-2xl font-semibold">Cadastrar cliente</h1>
+      <span class="text-muted-color">Informe os dados para salvar um novo cliente</span>
+    </div>
+  </ng-template>
+
+
+  <div class="grid grid-cols-2 gap-5 h-full items-start">
+    <div class="flex flex-col gap-4 bg-primary-contrast p-4 rounded-lg">
+      <div class="flex gap-0.5 flex-col">
+        <label class="font-semibold" for="username">Nome</label>
+        <input autocomplete="off" id="username" pInputText/>
+      </div>
+
+      <div class="flex gap-0.5 flex-col">
+        <label class="font-semibold" for="phone-number">Contato</label>
+        <p-inputmask type="tel"  id="phone-number" mask="(99) 99999-9999"/>
+      </div>
+
+      <div class="flex gap-0.5 flex-col">
+        <label class="font-semibold" for="username">Observações</label>
+        <textarea cols="30" pTextarea rows="5"></textarea>
+      </div>
+
+      <div class="flex gap-0.5 flex-col">
+        <app-primary-button
+        iconTitle="pi pi-calendar-plus"
+        buttonTitle="Agendar este cliente"
+        [primaryHover]="true"
+        />
+      </div>
+
+    </div>
+
+    <div>
+      <app-profile-preview-form
+      />
+    </div>
+    <p-button
+        label="Clientes"
+        iconPos="right"
+        severity="secondary"
+        icon="pi pi-plus-circle"
+        size="small"
+        styleClass="flex! absolute! bottom-5! right-5! bg-primary-700! text-primary-contrast! item-center hover:opacity-90! transition-opacity!"
+      />
+
+  </div>
+</p-dialog>
