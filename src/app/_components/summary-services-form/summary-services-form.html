@@ -1,87 +1,33 @@
-<p-card header="Serviços selecionados">
+<div class="bg-white rounded-xl shadow h-[23.5rem] flex flex-col p-5"
+     header="Serviços selecionados">
 
-<!--  Service item-->
-
-  <div class="flex-col gap-2 flex">
-
-    <div
-      class="flex items-center justify-between hover:bg-surface-50 p-1.5 rounded-lg">
-      <div class="flex items-center gap-1.5">
-        <i
-          class="pi pi-minus-circle text-red-500 cursor-pointer hover:opacity-60 transition-opacity"></i>
-        <span class="text-sm font-medium">Design com Henna</span>
-        <div class="w-[30px] h-[30px] overflow-hidden">
-          <img class="w-full h-full object-cover rounded-full" src="eyebrowndesign.png" alt="">
-        </div>
-      </div>
-
-      <div>
-        <span class="font-medium">R$ 35,00</span>
-      </div>
-    </div>
-
-    <div class="flex items-center justify-between hover:bg-surface-50 p-1.5 rounded-lg">
-      <div class="flex items-center gap-1.5">
-        <i
-          class="pi pi-minus-circle text-red-500 cursor-pointer hover:opacity-60 transition-opacity"></i>
-        <span class="text-sm font-medium">Design com Henna</span>
-        <div class="w-[30px] h-[30px] overflow-hidden">
-          <img class="w-full h-full object-cover rounded-full" src="eyebrowndesign.png" alt="">
-        </div>
-      </div>
-
-      <div>
-        <span class="font-medium">R$ 35,00</span>
-      </div>
-    </div>
-
-
-
-    <div class="flex items-center justify-between hover:bg-surface-50 p-1.5 rounded-lg">
-      <div class="flex items-center gap-1.5">
-        <i
-          class="pi pi-minus-circle text-red-500 cursor-pointer hover:opacity-60 transition-opacity"></i>
-        <span class="text-sm font-medium">Design com Henna</span>
-        <div class="w-[30px] h-[30px] overflow-hidden">
-          <img class="w-full h-full object-cover rounded-full" src="eyebrowndesign.png" alt="">
-        </div>
-      </div>
-
-      <div>
-        <span class="font-medium">R$ 35,00</span>
-      </div>
-    </div>
-
-
-    <div class="flex items-center justify-between hover:bg-surface-50 p-1.5 rounded-lg">
-      <div class="flex items-center gap-1.5">
-        <i
-          class="pi pi-minus-circle text-red-500 cursor-pointer hover:opacity-60 transition-opacity"></i>
-        <span class="text-sm font-medium">Design com Henna</span>
-        <div class="w-[30px] h-[30px] overflow-hidden">
-          <img class="w-full h-full object-cover rounded-full" src="eyebrowndesign.png" alt="">
-        </div>
-      </div>
-
-      <div>
-        <span class="font-medium">R$ 35,00</span>
-      </div>
-    </div>
+  <div>
+    <h1 class="font-medium text-xl mb-3">Serviços Selecionados</h1>
   </div>
 
-  <p-divider/>
+  <div class="flex-1! overflow-y-auto!">
+    @if (services.length > 0) {
+      <div class="flex flex-col gap-2">
+        @for (service of services; track service.id) {
+          <app-service-item
+            [priceService]="service.price"
+            [titleService]="service.name"
+          />
+        }
+      </div>
+    } @else {
+      <div class="flex items-center gap-1 justify-center h-full">
+        <i class="pi pi-exclamation-circle text-xs!"></i>
+        <span class="text-muted-color text-xs">Nenhum serviço adicionado ainda</span>
+      </div>
+    }
+  </div>
 
-  <div class="items-center flex justify-between">
+
+  <p-divider class="my-2"/>
+
+  <div class="flex justify-between items-center">
     <h1 class="text-xl font-semibold">Total</h1>
-
     <span class="text-xl font-semibold">R$ 240,00</span>
   </div>
-
-
-
-
-
-
-
-
-</p-card>
+</div>

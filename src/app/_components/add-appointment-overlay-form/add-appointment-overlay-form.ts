@@ -1,32 +1,73 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {StepperModule} from 'primeng/stepper';
 import {Button} from 'primeng/button';
 import {Dialog} from 'primeng/dialog';
 import {PrimaryButton} from '../primary-button/primary-button';
-import {FormsModule} from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {DatePickerModule} from 'primeng/datepicker';
 import {SelectButton} from 'primeng/selectbutton';
 import { SelectModule } from 'primeng/select';
 import {Profile} from '../profile/profile';
-import {NgClass} from '@angular/common';
+import {JsonPipe, NgClass} from '@angular/common';
 import {ProfilePreviewForm} from '../profile-preview-form/profile-preview-form';
 import {
   SummaryServicesForm
 } from '../summary-services-form/summary-services-form';
 import {ServiceItemForm} from '../service-item-form/service-item-form';
+import {BusinessServiceModel} from '../../models/BusinessService.model';
 
 
 @Component({
   selector: 'app-add-appointment-overlay-form',
-  imports: [StepperModule, Button, Dialog, PrimaryButton, FormsModule, DatePickerModule, SelectButton, SelectModule, Profile, NgClass, ProfilePreviewForm, SummaryServicesForm, ServiceItemForm],
+  imports: [StepperModule, Button, Dialog, PrimaryButton, FormsModule, DatePickerModule, SelectButton, SelectModule, Profile, NgClass, ProfilePreviewForm, SummaryServicesForm, ServiceItemForm, ReactiveFormsModule, JsonPipe],
   templateUrl: './add-appointment-overlay-form.html',
   styleUrl: './add-appointment-overlay-form.css'
 
 })
 export class AddAppointmentOverlayForm implements OnInit{
 
+
+  appointmentForm = new FormGroup({
+    date: new FormControl('', [Validators.required]),
+    hour: new FormControl(null, [Validators.required]),
+    client: new FormControl('', [Validators.required]),
+  })
+
+  serviceItems: BusinessServiceModel[] = [
+    {
+      id: 1,
+      price: "85,00",
+      name: "Brown Lamination",
+    },
+    {
+      id: 2,
+      price: "30,00",
+      name: "Design com Henna",
+    },
+    {
+      id: 3,
+      price: "85,00",
+      name: "Basic Design",
+    },
+  ]
+  chosenServiceItems: BusinessServiceModel[] = []
+
+  addServiceToCar(ServiceItem: BusinessServiceModel) {
+    this.chosenServiceItems.push(ServiceItem);
+  }
+
+  minDate: Date | undefined;
+
+  maxDate: Date | undefined;
+
+
   visible: boolean = false;
-  date2: Date | undefined;
   value!: number;
   countries: any[] | undefined;
 
@@ -35,12 +76,12 @@ export class AddAppointmentOverlayForm implements OnInit{
   selectedCountry: string | undefined;
 
   hours: any[] = [
-    { hour: '13:30', value: 1 },
-    { hour: '14:30', value: 2 },
-    { hour: '15:00', value: 3 },
-    { hour: '15:30', value: 4 },
-    { hour: '16:30', value: 5 },
-    { hour: '17:00', value: 6 }
+    { hour: '13:30' },
+    { hour: '14:30' },
+    { hour: '15:00' },
+    { hour: '15:30' },
+    { hour: '16:30' },
+    { hour: '17:00' }
   ];
 
   ngOnInit() {
@@ -56,11 +97,31 @@ export class AddAppointmentOverlayForm implements OnInit{
       { name: 'Spain', code: 'ES' },
       { name: 'United States', code: 'US' }
     ];
+
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+    let nextMonth = (month === 11) ? 0 : month + 1;
+    let nextYear = (nextMonth === 0) ? year + 1 : year + 2;
+
+    let nextMonths = (month === 11) ? 0 : month + 3;
+    this.minDate = new Date();
+    this.minDate.setDate(today.getDate() - 7);
+    this.maxDate = new Date();
+    this.maxDate.setMonth(nextMonths);
+    this.maxDate.setFullYear(nextYear);
+
+
+  }
+
+  formValidated() {
+    return this.appointmentForm.valid;
   }
 
 
   showDialog() {
     this.visible = true;
   }
+
 
 }

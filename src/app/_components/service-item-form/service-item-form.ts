@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
+import {BusinessServiceModel} from '../../models/BusinessService.model';
 
 @Component({
   selector: 'app-service-item-form',
@@ -7,6 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './service-item-form.css'
 })
 export class ServiceItemForm {
+
+  @Input() titleService: string = ""
+  @Input() priceService: string = ""
+
 
   showOverlay = false;
   private lastClickTime = 0;
@@ -26,13 +31,14 @@ export class ServiceItemForm {
         this.showOverlay = true;
         this.lastClickTime = now;
 
-        setTimeout(() => {
-          this.showOverlay = false;
-        }, 2000);
+        setTimeout(
+          () => {
+            this.showOverlay = false;
+          },
+          2000
+        );
       }
     }
   }
-
-
 
 }

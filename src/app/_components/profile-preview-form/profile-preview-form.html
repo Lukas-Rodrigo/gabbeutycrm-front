@@ -1,24 +1,54 @@
 <p-card class=" relative!" header="Cliente">
 
 
-  <app-add-photo-client
-  class="absolute top-4 right-1"
-  />
+  @if (previewClient) {
+    <app-preview-photo-client
+
+     class="absolute top-4 right-1"
+    />
+  } @else {
+    <app-add-photo-client
+      class="absolute top-4 right-1"
+    />
+  }
 
   <div>
     <div class="flex flex-col gap-1 self-center mb-5">
-      <span
-        class="font-semibold text-muted-color-emphasis text-lg">
-        {{nameClient ? nameClient: '-'}}
+      <div class="flex gap-2 items-center min-h-[2rem]">
+        <i class="pi pi-user text-sm! text-muted-color"></i>
+        @if (!nameClient) {
+          <span class="text-muted-color text-xs">Nome não informado</span>
+        }
+        <span
+          class="font-semibold text-muted-color-emphasis text-lg">
+        {{ nameClient }}
       </span>
-      {{numberClient ? numberClient: '-'}}
+
+      </div>
+      <div class="flex gap-2 items-center">
+        <i class="pi pi-whatsapp text-sm! text-muted-color"></i>
+        @if (!numberClient) {
+          <span class="text-muted-color text-xs">Contato não informado</span>
+        }
+        <span class="italic">
+          {{ numberClient }}
+        </span>
+
+
+      </div>
     </div>
 
     <div>
-      <h1 class="text-lg font-semibold text-muted-color-emphasis">Observações</h1>
-      <div class="h-[5rem] overflow-y-auto w-full! bg-primary-50 rounded-lg p-2">
-          <span>
-            {{observationClient ? observationClient: '-'}}
+      <h1 class="text-lg font-semibold text-muted-color-emphasis">
+        Observações</h1>
+      <div
+        class="h-[5rem] overflow-y-auto w-full! bg-primary-50 rounded-lg p-2">
+        @if (!observationClient) {
+          <span class="text-muted-color text-xs italic"> Nenhuma observação
+            adicionada ainda</span>
+        }
+        <span class="italic font-medium">
+            {{ observationClient}}
           </span>
       </div>
     </div>

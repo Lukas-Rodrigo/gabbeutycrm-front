@@ -5,7 +5,6 @@
   iconTitle="pi pi-calendar-plus"
 />
 
-
 <p-dialog
   [(visible)]="visible"
   [baseZIndex]="10000"
@@ -13,7 +12,7 @@
   [dismissableMask]="true"
   [draggable]="false"
   [modal]="true"
-  [style]="{ width: '48rem', height: '50rem' }"
+  [style]="{ width: '48rem', height: '52rem' }"
   styleClass="bg-[#f9faff]! relative!"
 >
 
@@ -27,7 +26,7 @@
 
   <div class="grid grid-cols-2 gap-5">
     <div class="bg-primary-contrast p-3 rounded-lg">
-      <p-stepper [(value)]="activeStep" >
+      <p-stepper [(value)]="activeStep">
         <p-step-list class="text-sm!">
           <p-step [value]="1" class="flex flex-row flex-auto gap-2 p-0!">
             <ng-template #content let-activateCallback="activateCallback"
@@ -48,8 +47,9 @@
             </ng-template>
           </p-step>
 
-          <p-step [value]="2" class="flex flex-row flex-auto gap-2">
-            <ng-template #content let-activateCallback="activateCallback"
+          <p-step [value]="2" class="flex flex-row flex-auto gap-2"
+                  [disabled]="!formValidated()">
+            <ng-template  #content let-activateCallback="activateCallback"
                          let-value="value">
               <button
                 (click)="activateCallback()"
@@ -69,9 +69,11 @@
           </p-step>
 
         </p-step-list>
-        <p-step-panels >
 
-          <p-step-panel [value]="1">
+
+        <p-step-panels>
+          <!--          Primeiro painel-->
+          <p-step-panel [formGroup]="appointmentForm" [value]="1">
             <ng-template #content let-activateCallback="activateCallback">
 
               <div class="h-[32.8rem]">
@@ -80,11 +82,13 @@
                     class="flex flex-col font-medium gap-0.5 w-full">
                     <label for="date">Data</label>
                     <p-datepicker
-                      [(ngModel)]="date2" [iconDisplay]="'input'"
                       [showIcon]="true"
                       inputId="date"
                       size="small"
-
+                      formControlName="date"
+                      [readonlyInput]="true"
+                      [minDate]="minDate"
+                      [maxDate]="maxDate"
 
                     ></p-datepicker>
 
@@ -93,12 +97,10 @@
                   <div class="flex flex-col gap-1 ">
                     <label class="font-semibold">Horários</label>
                     <p-select-button
-                      [(ngModel)]="value" [options]="hours"
+                      [options]="hours"
                       class="grid! grid-cols-3! gap-3  bg-transparent!"
-                      optionLabel="hour"
-                      optionValue="value"
                       size="small"
-
+                      formControlName="hour"
                     >
                       <ng-template #item let-item>
                         <div>
@@ -115,7 +117,7 @@
                     <label class="font-semibold"
                            for="clientSelect">Cliente</label>
                     <p-select
-                      [(ngModel)]="selectedCountry"
+                      formControlName="client"
                       [filter]="true"
                       [options]="countries"
                       [showClear]="true"
@@ -142,6 +144,21 @@
                     </p-select>
                   </div>
 
+                  <p>
+                    clients: {{ appointmentForm.value.client | json }}
+                  </p>
+                  <p>
+                    date: {{ appointmentForm.value.date }}
+                  </p>
+
+                  <p>
+                    horario: {{ appointmentForm.value.hour | json }}
+                  </p>
+
+                  <p>
+                    {{ appointmentForm.valid }}
+                  </p>
+
                   <p-button (onClick)="activateCallback(2)"
                             icon="pi pi-plus-circle"
                             iconPos="right"
@@ -149,6 +166,8 @@
                             severity="secondary"
                             size="small"
                             styleClass="absolute! bottom-5! right-5! bg-primary! text-primary-contrast!"
+                            [disabled]="!formValidated()"
+
                   />
                 </div>
               </div>
@@ -158,21 +177,19 @@
             <ng-template #content let-activateCallback="activateCallback">
               <div class="h-[35rem] ">
                 <h1
-                  class="font-semibold text-xl text-muted-color-emphasis mb-5">Serviços</h1>
+                  class="font-semibold text-xl text-muted-color-emphasis mb-5">
+                  Serviços</h1>
 
                 <div class="overflow-y-auto flex gap-3 flex-col">
-                  <app-service-item-form/>
-                  <app-service-item-form/>
-                  <app-service-item-form/>
-                  <app-service-item-form/>
-                  <app-service-item-form/>
-                  <app-service-item-form/>
-
-                  <app-service-item-form/>
+                  @for (service of serviceItems; track service.id) {
+                    <app-service-item-form
+                      (click)="addServiceToCar(service)"
+                      [titleService]="service.name"
+                      [priceService]="service.price"
+                    />
+                  }
                 </div>
               </div>
-
-
             </ng-template>
           </p-step-panel>
 
@@ -180,13 +197,18 @@
         </p-step-panels>
       </p-stepper>
     </div>
-    <div class="flex flex-col gap-8">
-      <app-profile-preview-form/>
-      <app-summary-services-form/>
+    <div class="flex flex-col gap-8 ">
+      <app-profile-preview-form
+        [previewClient]="true"
+      />
+      <div>
+        <app-summary-services-form
+          [services]="chosenServiceItems"
+          class="h-full"
+        />
+      </div>
     </div>
   </div>
-
-
 
 
 </p-dialog>

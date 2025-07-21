@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, NgZone} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, NgZone} from '@angular/core';
 
 @Component({
   selector: 'app-add-photo-client',
@@ -14,6 +14,7 @@ export class AddPhotoClient {
 
   selectedFile: File | null = null;
   profileImagePreview: string | null = null;
+  @Input() inputProfile: boolean = false;
 
 
   onFileSelected(event: any) {
@@ -25,6 +26,7 @@ export class AddPhotoClient {
       reader.onload = () => {
         this.ngZone.run(() => {
           this.profileImagePreview = reader.result as string;
+          console.log(this.profileImagePreview);
           this.cdr.detectChanges();
         });
       };
