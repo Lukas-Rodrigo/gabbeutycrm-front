@@ -15,4 +15,5 @@ export class Profile {
 
   @Input() nameClient: string = '';
   @Input() showDetails: boolean = false;
+  @Input() photo: string = '';
 }
