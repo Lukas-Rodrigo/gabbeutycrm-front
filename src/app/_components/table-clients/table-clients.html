@@ -68,7 +68,8 @@
             pTooltip="Editar perfil"
             tooltipPosition="top"
           />
-          <app-profile [showDetails]="true" nameClient="Gabriela Peixoto"
+          <app-profile [showDetails]="true" [nameClient]="client.fullName"
+                       [photo]="client.photo"
                        [small]="true"></app-profile>
         </div>
       </td>

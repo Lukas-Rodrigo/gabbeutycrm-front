@@ -1,5 +1,4 @@
 import {Component, Input} from '@angular/core';
-import {Card} from 'primeng/card';
 import {Divider} from 'primeng/divider';
 import {ServiceItem} from '../service-item/service-item';
 import {BusinessServiceModel} from '../../models/BusinessService.model';
@@ -7,7 +6,6 @@ import {BusinessServiceModel} from '../../models/BusinessService.model';
 @Component({
   selector: 'app-summary-services-form',
   imports: [
-    Card,
     Divider,
     ServiceItem
   ],

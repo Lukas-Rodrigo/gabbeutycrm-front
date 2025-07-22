@@ -12,6 +12,7 @@ import {PrimaryButton} from '../primary-button/primary-button';
 import {Tooltip} from 'primeng/tooltip';
 import {NgClass} from '@angular/common';
 import {Client, Clients} from '../../_pages/clients/clients';
+import {ClientModel} from '../../models/Client.model';
 
 @Component({
   selector: 'app-table-clients',
@@ -34,7 +35,7 @@ import {Client, Clients} from '../../_pages/clients/clients';
 })
 export class TableClients {
 
-  clientsData = input<Client[]>([])
+  clientsData = input<ClientModel[]>([])
   showClientsTable = output<boolean>();
 
   showClientsTableChange() {

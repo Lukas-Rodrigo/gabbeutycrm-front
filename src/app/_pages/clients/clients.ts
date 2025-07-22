@@ -1,5 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
-import {BaseUi} from '../../_layouts/base-ui/base-ui';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {UserActions} from '../../_components/user-actions/user-actions';
 import {
   CardInformation
@@ -14,11 +13,12 @@ import {
   TableAppointments
 } from '../../_components/table-appointments/table-appointments';
 import {TableClients} from '../../_components/table-clients/table-clients';
+import {ClientService} from '../../_service/client-service';
 
 
 export interface Client {
   id: number;
-  name: string;
+  fullName: string;
   createdAt: string;
   phoneNumber: string;
   status: string;
@@ -36,7 +36,6 @@ export interface Appointment {
 @Component({
   selector: 'app-clients',
   imports: [
-    BaseUi,
     UserActions,
     CardInformation,
     TableModule,
@@ -55,9 +54,10 @@ export interface Appointment {
 })
 
 
-export class Clients {
-  @ViewChild('dt2') dt2!: Table;
+export class Clients implements OnInit {
 
+
+  @ViewChild('dt2') dt2!: Table;
   searchValue: string | undefined;
   showClients = true;
   clientsData: Client[] = [
@@ -65,7 +65,7 @@ export class Clients {
     {
       id: 1,
       status: "Ativo",
-      name: "Lucas Rodrigo",
+      fullName: "Lucas Rodrigo",
       phoneNumber: "75 981069197",
       createdAt: "06/07/2025"
     },
@@ -73,7 +73,7 @@ export class Clients {
     {
       id: 1,
       status: "Inativo",
-      name: "Lucas Rodrigo",
+      fullName: "Lucas Rodrigo",
       phoneNumber: "75 981069197",
       createdAt: "06/07/2025"
     },
@@ -81,7 +81,7 @@ export class Clients {
     {
       id: 1,
       status: "Ativo",
-      name: "Gabriela Peixoto",
+      fullName: "Gabriela Peixoto",
       phoneNumber: "75 981069197",
       createdAt: "06/07/2025"
     },
@@ -89,7 +89,7 @@ export class Clients {
     {
       id: 1,
       status: "Inativo",
-      name: "Lucas Rodrigo",
+      fullName: "Lucas Rodrigo",
       phoneNumber: "75 981069197",
       createdAt: "06/07/2025"
     },
@@ -102,7 +102,7 @@ export class Clients {
       client: {
         id: 1,
         status: "Ativo",
-        name: "Lucas Rodrigo",
+        fullName: "Lucas Rodrigo",
         phoneNumber: "75 981069197",
         createdAt: "06/07/2025"
       },
@@ -117,7 +117,7 @@ export class Clients {
       client: {
         id: 1,
         status: "Pendente",
-        name: "Lucas Rodrigo",
+        fullName: "Lucas Rodrigo",
         phoneNumber: "75 981069197",
         createdAt: "06/07/2025"
       },
@@ -132,7 +132,7 @@ export class Clients {
       client: {
         id: 1,
         status: "Concluido",
-        name: "Gabriela Peixoto",
+        fullName: "Gabriela Peixoto",
         phoneNumber: "75 981069197",
         createdAt: "06/07/2025"
       },
@@ -146,7 +146,7 @@ export class Clients {
       client: {
         id: 1,
         status: "Concluido",
-        name: "Lucas Rodrigo",
+        fullName: "Lucas Rodrigo",
         phoneNumber: "75 981069197",
         createdAt: "06/07/2025"
       },
@@ -156,6 +156,13 @@ export class Clients {
       price: 80.00
     }
   ]
+  #clientService = inject(ClientService);
+  public getAllClients = this.#clientService.getAllClients;
+
+  ngOnInit(): void {
+    this.#clientService.getAllClients$(1).subscribe()
+
+  }
 
   showEvent(event: boolean) {
     this.showClients = event;
@@ -178,7 +185,7 @@ export class Clients {
     const search = this.searchValue?.toLowerCase() ?? '';
     return {
       '!bg-primary !text-primary-contrast':
-        client.name.toLowerCase().includes(search) ||
+        client.fullName.toLowerCase().includes(search) ||
         client.status.toLowerCase().includes(search) ||
         client.phoneNumber.toLowerCase().includes(search) ||
         client.createdAt.toLowerCase().includes(search)
@@ -199,4 +206,5 @@ export class Clients {
       'bg-red-500': appointment.status === 'Cancelado',
     };
   }
+
 }

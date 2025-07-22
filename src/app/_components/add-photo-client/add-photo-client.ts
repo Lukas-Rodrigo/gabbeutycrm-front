@@ -1,4 +1,10 @@
-import {ChangeDetectorRef, Component, Input, NgZone} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component, EventEmitter,
+  Input,
+  NgZone, OnInit,
+  Output
+} from '@angular/core';
 
 @Component({
   selector: 'app-add-photo-client',
@@ -6,15 +12,18 @@ import {ChangeDetectorRef, Component, Input, NgZone} from '@angular/core';
   templateUrl: './add-photo-client.html',
   styleUrl: './add-photo-client.css'
 })
-export class AddPhotoClient {
+export class AddPhotoClient{
 
   constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {
   }
 
 
   selectedFile: File | null = null;
-  profileImagePreview: string | null = null;
+
+  @Input() profileImagePreview: string | null = null;
   @Input() inputProfile: boolean = false;
+
+  @Output() imageSelected = new EventEmitter<string | null>();
 
 
   onFileSelected(event: any) {
@@ -26,17 +35,45 @@ export class AddPhotoClient {
       reader.onload = () => {
         this.ngZone.run(() => {
           this.profileImagePreview = reader.result as string;
-          console.log(this.profileImagePreview);
+          this.imageSelected.emit(this.profileImagePreview);
           this.cdr.detectChanges();
         });
       };
-
       reader.readAsDataURL(file);
+    }
+  }
+
+  showOverlay = false;
+  private lastClickTime = 0;
+
+  handleClick(event: MouseEvent) {
+    const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+    if (isTouch) {
+      const now = Date.now();
+      const doubleClick = now - this.lastClickTime < 200000;
+
+      if (doubleClick) {
+        alert('Adicionado!');
+        this.showOverlay = false;
+        this.lastClickTime = 0;
+      } else {
+        this.showOverlay = true;
+        this.lastClickTime = now;
+
+        setTimeout(
+          () => {
+            this.showOverlay = false;
+          },
+          2000
+        );
+      }
     }
   }
 
   removeProfileImage() {
     this.profileImagePreview = null;
+    this.imageSelected.emit(null);
     this.selectedFile = null;
   }
 

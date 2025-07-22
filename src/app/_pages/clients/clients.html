@@ -16,17 +16,16 @@
   </div>
 
   <div class="card p-4 rounded-lg bg-primary-contrast">
-    @if (showClients) {
+    @if (showClients && getAllClients(); as clients) {
       <app-table-clients
         (showClientsTable)="showEvent($event)"
-        [clientsData]="clientsData"
+        [clientsData]="clients"
       />
     } @else {
       <app-table-appointments
         [appointmentData]="appointmentData"
         (showClientsTable)="showEvent($event)"
       />
-
     }
 
   </div>
