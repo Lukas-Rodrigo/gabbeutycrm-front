@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, NgZone} from '@angular/core';
+import {Component} from '@angular/core';
 import {Dialog} from 'primeng/dialog';
 import {InputText} from 'primeng/inputtext';
 import {InputMask} from 'primeng/inputmask';
@@ -12,6 +12,18 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import {ClientService} from '../../_service/client-service';
+import {ClientModel} from '../../models/Client.model';
+import {concatMap} from 'rxjs';
+import {MessageService} from 'primeng/api';
+
+type ClientFormGroup = {
+  id: FormControl<number | null>;
+  fullName: FormControl<string | null>;
+  phoneNumber: FormControl<string | null>;
+  photo: FormControl<string | null>;
+  observation: FormControl<string | null>;
+};
 
 @Component({
   selector: 'app-add-clients-overlay-form',
@@ -25,26 +37,62 @@ import {
 export class AddClientsOverlayForm {
 
   visible: boolean = false;
-  selectedFile: File | null = null;
-  profileImagePreview: string | null = null;
-  public clientForm = new FormGroup({
-    name: new FormControl(
+  imagePreview: string | null = null;
+  public clientForm = new FormGroup<ClientFormGroup>({
+    id: new FormControl(null),
+    fullName: new FormControl(
       '',
-      [Validators.required, Validators.minLength(3), Validators.maxLength(37)],
+      [Validators.required, Validators.minLength(3), Validators.maxLength(37)]
     ),
     phoneNumber: new FormControl(
       '',
-      [Validators.required,],
+      [Validators.required]
     ),
-    observation: new FormControl('',),
-    photo: new FormControl('',),
-  })
+    observation: new FormControl(''),
+    photo: new FormControl(''),
+  });
 
-  constructor(private cdr: ChangeDetectorRef, private ngZone: NgZone) {
+  constructor(private clientService: ClientService, private messageService: MessageService) {
+  }
+
+  public newClient(userId: number, client: ClientModel) {
+    return this.clientService.saveClient(
+      1,
+      client
+    )
+      .pipe(concatMap(() => this.clientService.getAllClients$(1)))
+      .subscribe({
+        next: () => {
+          this.showSuccessToast();
+        }
+      });
+  }
+
+  showSuccessToast() {
+    this.messageService.add({
+      severity: 'success',
+      summary: "Cliente cadastrado",
+      detail: "O cliente foi salvo com sucesso!",
+      life: 3000,
+    })
   }
 
   showDialog() {
     this.visible = true;
+  }
+
+  onSubmit() {
+    if (!this.clientForm.valid) {
+      return;
+    }
+    const client: ClientModel = this.clientForm.getRawValue();
+    this.newClient(
+      1,
+      client
+    )
+    this.clientForm.reset();
+    this.imagePreview = null;
+    this.visible = false;
   }
 
   getProperty(property: string) {
@@ -61,7 +109,7 @@ export class AddClientsOverlayForm {
   }
 
   nameErrors() {
-    const clientNameField = this.clientForm.get("name")
+    const clientNameField = this.clientForm.get("fullName")
 
     if (clientNameField?.invalid && clientNameField.dirty && clientNameField?.value?.length == 0) {
       return 'O nome do cliente é obrigatório.';
@@ -70,33 +118,10 @@ export class AddClientsOverlayForm {
 
   }
 
+  onPhotoSelected(base64: string | null) {
+    this.imagePreview = base64;
+    this.clientForm.get('photo')?.setValue(base64);
 
-  // uploadImage() {
-  //   if (!this.selectedFile) return;
-  //
-  //   const formData = new FormData();
-  //   formData.append(
-  //     'file',
-  //     this.selectedFile
-  //   );
-  //
-  //   this.http.post(
-  //     'URL_DO_BACKEND',
-  //     formData
-  //   ).subscribe({
-  //     next: res => {
-  //       console.log(
-  //         'Imagem enviada!',
-  //         res
-  //       );
-  //     },
-  //     error: err => {
-  //       console.error(
-  //         'Erro no upload',
-  //         err
-  //       );
-  //     }
-  //   });
-  // }
+  }
 
 }
