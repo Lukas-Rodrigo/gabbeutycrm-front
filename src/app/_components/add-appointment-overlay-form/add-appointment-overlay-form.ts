@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit, signal} from '@angular/core';
 import {StepperModule} from 'primeng/stepper';
 import {Button} from 'primeng/button';
 import {Dialog} from 'primeng/dialog';
@@ -21,6 +21,8 @@ import {
 } from '../summary-services-form/summary-services-form';
 import {ServiceItemForm} from '../service-item-form/service-item-form';
 import {BusinessServiceModel} from '../../models/BusinessService.model';
+import {ClientModel} from '../../models/Client.model';
+import {ClientService} from '../../_service/client-service';
 
 
 @Component({
@@ -32,12 +34,51 @@ import {BusinessServiceModel} from '../../models/BusinessService.model';
 })
 export class AddAppointmentOverlayForm implements OnInit{
 
+  #clientService = inject(ClientService);
+  public getAllClients = this.#clientService.getAllClients;
+  clients = signal<ClientModel[]>([])
+
+  clientSelected = signal<ClientModel | null>(null)
+
+
+
+  ngOnInit() {
+    this.#clientService.getAllClients$(1).subscribe({
+      next: (res) => {
+        this.clients.set(res ?? [])
+      }
+
+    })
+
+
+
+    let today = new Date();
+    let year = today.getFullYear();
+    let month = today.getMonth();
+    let nextMonth = (month === 11) ? 0 : month + 1;
+    let nextYear = (nextMonth === 0) ? year + 1 : year + 2;
+
+    let nextMonths = (month === 11) ? 0 : month + 3;
+    this.minDate = new Date();
+    this.minDate.setDate(today.getDate() - 7);
+    this.maxDate = new Date();
+    this.maxDate.setMonth(nextMonths);
+    this.maxDate.setFullYear(nextYear);
+
+
+  }
 
   appointmentForm = new FormGroup({
     date: new FormControl('', [Validators.required]),
     hour: new FormControl(null, [Validators.required]),
     client: new FormControl('', [Validators.required]),
   })
+
+  onClientSelected(client: ClientModel) {
+    this.clientSelected.set(client);
+    console.log(this.clientSelected());
+  }
+
 
   serviceItems: BusinessServiceModel[] = [
     {
@@ -69,7 +110,6 @@ export class AddAppointmentOverlayForm implements OnInit{
 
   visible: boolean = false;
   value!: number;
-  countries: any[] | undefined;
 
   activeStep: number = 1;
 
@@ -84,35 +124,7 @@ export class AddAppointmentOverlayForm implements OnInit{
     { hour: '17:00' }
   ];
 
-  ngOnInit() {
-    this.countries = [
-      { name: 'Australia', code: 'AU' },
-      { name: 'Brazil', code: 'BR' },
-      { name: 'China', code: 'CN' },
-      { name: 'Egypt', code: 'EG' },
-      { name: 'France', code: 'FR' },
-      { name: 'Germany', code: 'DE' },
-      { name: 'India', code: 'IN' },
-      { name: 'Japan', code: 'JP' },
-      { name: 'Spain', code: 'ES' },
-      { name: 'United States', code: 'US' }
-    ];
 
-    let today = new Date();
-    let year = today.getFullYear();
-    let month = today.getMonth();
-    let nextMonth = (month === 11) ? 0 : month + 1;
-    let nextYear = (nextMonth === 0) ? year + 1 : year + 2;
-
-    let nextMonths = (month === 11) ? 0 : month + 3;
-    this.minDate = new Date();
-    this.minDate.setDate(today.getDate() - 7);
-    this.maxDate = new Date();
-    this.maxDate.setMonth(nextMonths);
-    this.maxDate.setFullYear(nextYear);
-
-
-  }
 
   formValidated() {
     return this.appointmentForm.valid;
@@ -121,6 +133,8 @@ export class AddAppointmentOverlayForm implements OnInit{
 
   showDialog() {
     this.visible = true;
+    this.appointmentForm.reset();
+    this.clientSelected.set(null)
   }
 
 

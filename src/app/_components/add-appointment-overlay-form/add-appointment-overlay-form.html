@@ -49,7 +49,7 @@
 
           <p-step [value]="2" class="flex flex-row flex-auto gap-2"
                   [disabled]="!formValidated()">
-            <ng-template  #content let-activateCallback="activateCallback"
+            <ng-template #content let-activateCallback="activateCallback"
                          let-value="value">
               <button
                 (click)="activateCallback()"
@@ -75,7 +75,6 @@
           <!--          Primeiro painel-->
           <p-step-panel [formGroup]="appointmentForm" [value]="1">
             <ng-template #content let-activateCallback="activateCallback">
-
               <div class="h-[32.8rem]">
                 <div class="flex flex-col gap-4 w-3/4">
                   <div
@@ -89,7 +88,6 @@
                       [readonlyInput]="true"
                       [minDate]="minDate"
                       [maxDate]="maxDate"
-
                     ></p-datepicker>
 
                   </div>
@@ -119,45 +117,44 @@
                     <p-select
                       formControlName="client"
                       [filter]="true"
-                      [options]="countries"
+                      [options]="clients()"
                       [showClear]="true"
-                      filterBy="name"
-                      optionLabel="name"
+                      filterBy="fullName"
                       placeholder="Selecione um cliente"
                       size="small"
+                      (onChange)="onClientSelected($event.value)"
                     >
                       <ng-template #selectedItem let-selectedOption>
-                        <app-profile
-                          [nameClient]="selectedOption.name"
-                          [small]="true"
-                        />
+                        <div
+                             class="flex items-center gap-2">
+                          <div
+                            class="h-[30px] w-[30px] rounded-full border border-primary-200 overflow-hidden">
+                            <img class="w-full object-cover"
+                                 [src]="selectedOption.photo" alt="">
+                          </div>
+                          <p>
+                            {{selectedOption.fullName}}
+                          </p>
+
+                        </div>
+
                       </ng-template>
-                      <ng-template #item let-country>
+                      <ng-template #item let-client>
                         <div class="flex items-center gap-2">
-                          <img
-                            [class]="'flag flag-' + country.code.toLowerCase()"
-                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                            style="width: 18px"/>
-                          <div>{{ country.name }}</div>
+                          <div
+                            class="h-[30px] w-[30px] rounded-full border border-primary-400 overflow-hidden">
+                            <img class="w-full object-cover"
+                                 [src]="client.photo" alt="">
+
+                          </div>
+                          <p>
+                            {{client.fullName}}
+                          </p>
+
                         </div>
                       </ng-template>
                     </p-select>
                   </div>
-
-                  <p>
-                    clients: {{ appointmentForm.value.client | json }}
-                  </p>
-                  <p>
-                    date: {{ appointmentForm.value.date }}
-                  </p>
-
-                  <p>
-                    horario: {{ appointmentForm.value.hour | json }}
-                  </p>
-
-                  <p>
-                    {{ appointmentForm.valid }}
-                  </p>
 
                   <p-button (onClick)="activateCallback(2)"
                             icon="pi pi-plus-circle"
@@ -199,7 +196,11 @@
     </div>
     <div class="flex flex-col gap-8 ">
       <app-profile-preview-form
-        [previewClient]="true"
+        [nameClient]="clientSelected()?.fullName ?? null"
+        [profileImagePreviewInput]="clientSelected()?.photo ?? null"
+        [numberClient]="clientSelected()?.phoneNumber ?? null"
+        [observationClient]="clientSelected()?.observation ?? null"
+
       />
       <div>
         <app-summary-services-form
