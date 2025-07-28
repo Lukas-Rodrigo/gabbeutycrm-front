@@ -13,7 +13,7 @@
   [draggable]="false"
   [modal]="true"
   [style]="{ width: '48rem', height: '52rem' }"
-  styleClass="bg-[#f9faff]! relative!"
+  styleClass="bg-[#f9faff]! relative! flex!"
 >
 
   <ng-template #header>
@@ -23,15 +23,18 @@
     </div>
   </ng-template>
 
+  {{activeStep}}
+
 
   <div class="grid grid-cols-2 gap-5">
     <div class="bg-primary-contrast p-3 rounded-lg">
-      <p-stepper [(value)]="activeStep">
+      <p-stepper #stepper [(value)]="activeStep">
         <p-step-list class="text-sm!">
           <p-step [value]="1" class="flex flex-row flex-auto gap-2 p-0!">
             <ng-template #content let-activateCallback="activateCallback"
                          let-value="value">
               <button
+                #step2Button
                 (click)="activateCallback()"
                 class="bg-transparent cursor-pointer border-0 inline-flex flex-col gap-2">
                     <span
@@ -156,16 +159,6 @@
                     </p-select>
                   </div>
 
-                  <p-button (onClick)="activateCallback(2)"
-                            icon="pi pi-plus-circle"
-                            iconPos="right"
-                            label="Adicionar serviços"
-                            severity="secondary"
-                            size="small"
-                            styleClass="absolute! bottom-5! right-5! bg-primary! text-primary-contrast!"
-                            [disabled]="!formValidated()"
-
-                  />
                 </div>
               </div>
             </ng-template>
@@ -208,8 +201,19 @@
           class="h-full"
         />
       </div>
+
+      <p-button
+        icon="pi pi-plus-circle"
+        iconPos="right"
+        label="Adicionar serviços"
+        severity="secondary"
+        size="small"
+        class="self-end!"
+        styleClass="bg-primary! text-primary-contrast!"
+        [disabled]="!formValidated()"
+        (click)="stepDialog(2)"
+      />
     </div>
   </div>
-
 
 </p-dialog>

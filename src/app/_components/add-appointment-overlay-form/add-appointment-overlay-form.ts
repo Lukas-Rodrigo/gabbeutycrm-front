@@ -1,4 +1,11 @@
-import {Component, inject, Input, OnInit, signal} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component, ElementRef,
+  inject,
+  Input,
+  OnInit,
+  signal, ViewChild
+} from '@angular/core';
 import {StepperModule} from 'primeng/stepper';
 import {Button} from 'primeng/button';
 import {Dialog} from 'primeng/dialog';
@@ -34,6 +41,11 @@ import {ClientService} from '../../_service/client-service';
 })
 export class AddAppointmentOverlayForm implements OnInit{
 
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  @ViewChild('stepper') stepper: any;
+  @ViewChild('step2Button') step2Button!: ElementRef<HTMLButtonElement>;
+
   #clientService = inject(ClientService);
   public getAllClients = this.#clientService.getAllClients;
   clients = signal<ClientModel[]>([])
@@ -42,12 +54,14 @@ export class AddAppointmentOverlayForm implements OnInit{
 
 
 
+
   ngOnInit() {
+    console.log(this.step2Button)
+
     this.#clientService.getAllClients$(1).subscribe({
       next: (res) => {
         this.clients.set(res ?? [])
       }
-
     })
 
 
@@ -111,7 +125,7 @@ export class AddAppointmentOverlayForm implements OnInit{
   visible: boolean = false;
   value!: number;
 
-  activeStep: number = 1;
+  activeStep: number = 2;
 
   selectedCountry: string | undefined;
 
@@ -135,6 +149,11 @@ export class AddAppointmentOverlayForm implements OnInit{
     this.visible = true;
     this.appointmentForm.reset();
     this.clientSelected.set(null)
+    this.activeStep = 1;
+  }
+
+  stepDialog(step: number): void {
+    this.stepper?.value?.set?.(step);
   }
 
 
